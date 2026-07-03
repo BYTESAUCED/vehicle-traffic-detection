@@ -6,10 +6,8 @@ labelling. It covers the environment, dataset preparation, data inspection,
 annotation preprocessing, density-threshold derivation, model configuration,
 the training run, outputs, and how to reproduce everything.
 
-Image placeholders are included throughout. Replace the paths with real images
-committed to the repository (for example under `docs/images/`) so they render on
-GitHub. Some paths point to plots that `training_mps.py` already writes to
-`outputs/`.
+The figures below are the plots that `training_mps.py` writes to `outputs/`.
+They render on GitHub once the `outputs/` folder is committed.
 
 
 ## 1. Environment
@@ -48,11 +46,6 @@ spawn start-method crash that occurs when a flat script starts worker processes.
 - Classes (13): Hatchback, Sedan, SUV, MUV, Bus, Truck, Three-wheeler,
   Two-wheeler, LCV, Mini-bus, Tempo-traveller, Bicycle, Van.
 
-Placeholder: overview of the dataset source or a contact sheet of raw frames.
-
-<!-- TODO: add image -->
-![Dataset overview](docs/images/dataset_overview.png)
-
 
 ## 3. Frame selection and extraction
 
@@ -87,7 +80,7 @@ bmd45_subset/
     test/    images + _annotations.coco.json
 ```
 
-Placeholder: split summary chart (written to `outputs/split_summary.png`).
+Split summary chart:
 
 ![Dataset split summary](outputs/split_summary.png)
 
@@ -109,11 +102,6 @@ Bounding-box area distribution and vehicles-per-image distribution:
 
 ![Box area and density distributions](outputs/box_and_density_dist.png)
 
-Placeholder: a single annotated example at full resolution.
-
-<!-- TODO: add image -->
-![Annotated example](docs/images/annotation_example.png)
-
 
 ## 5. Annotation preprocessing
 
@@ -129,11 +117,6 @@ Before training, annotations are sanitised:
 This mirrors the clip and minimum-area handling described in the RT-DETRv2
 reference. RF-DETR performs resize, normalisation, and augmentation internally,
 so no manual augmentation pipeline is added here.
-
-Placeholder: before/after visualisation of a clipped box.
-
-<!-- TODO: add image -->
-![Box clipping before and after](docs/images/box_clipping.png)
 
 
 ## 6. Density cutoffs and display cap
@@ -173,8 +156,7 @@ reaches 45+). The displayed count is capped (default 22) so outliers do not
 distort the UI or aggregate stats. The density label is always computed from the
 true, uncapped count.
 
-Placeholder: threshold-derivation histogram (written to
-`outputs/density_threshold.png`).
+Threshold-derivation histogram:
 
 ![Density threshold derivation](outputs/density_threshold.png)
 
@@ -186,11 +168,6 @@ Placeholder: threshold-derivation histogram (written to
 - Initialisation: Roboflow pretrained weights.
 - Detection head: re-initialised to the 13 BMD-45 classes, detected
   automatically from the dataset annotations.
-
-Placeholder: architecture diagram.
-
-<!-- TODO: add image -->
-![RF-DETR-Nano architecture](docs/images/architecture.png)
 
 
 ## 8. Training run
@@ -213,14 +190,10 @@ Run training:
 uv run python training_mps.py
 ```
 
-Placeholder: training loss curve and validation mAP curve. These can be built
-from `rfdetr-nano-bmd45-finetune/metrics.csv`.
-
-<!-- TODO: add image -->
-![Training loss curve](docs/images/training_loss.png)
-
-<!-- TODO: add image -->
-![Validation mAP curve](docs/images/val_map.png)
+The configuration targets 40 epochs; the run used for the checkpoints in this
+repository logged through epoch 16 (best validation metrics around epochs
+15-16). Per-epoch metrics are in `rfdetr-nano-bmd45-finetune/metrics.csv` and the
+TensorBoard event file in the same folder.
 
 
 ## 9. Outputs and checkpoints
@@ -253,27 +226,19 @@ git clone https://huggingface.co/M20VJ/rfdetr-nano-bmd45-finetune
 ## 10. Evaluation
 
 RF-DETR logs COCO-style mAP and mAR on the validation split each epoch (see
-`metrics.csv` and the TensorBoard logs). At the task level, predicted density
-labels can be compared against ground-truth density labels on the validation
-images.
-
-Placeholder: results table and qualitative detection examples.
-
-<!-- TODO: add results table image or a Markdown table of final metrics -->
-![Evaluation metrics](docs/images/eval_metrics.png)
-
-<!-- TODO: add image -->
-![Detection examples](docs/images/detection_examples.png)
-
-Example metrics table to fill in:
+`metrics.csv` and the TensorBoard logs). The best validation metrics from the
+logged run (through epoch 16) are:
 
 ```
-Metric            Value
-mAP@0.50          TODO
-mAP@0.50:0.95     TODO
-mAR               TODO
-Density accuracy  TODO
+Metric          Best value   Epoch
+mAP@0.50        0.3841       15
+mAP@0.50:0.95   0.2883       16
+mAP@0.75        0.3249       15
+mAR             0.6386       15
 ```
+
+These are read directly from `rfdetr-nano-bmd45-finetune/metrics.csv`. Values
+are from a short, time-boxed run and are not tuned for accuracy.
 
 
 ## 11. Reproduce
@@ -313,22 +278,10 @@ uv run traffic-state --input bmd45_subset/valid --method otsu --format csv
 - No temporal information is used; results are per-frame only.
 
 
-## Image placeholder checklist
+## Figures
 
-Add these images (suggested location `docs/images/`) and confirm the paths above:
-
-```
-docs/images/dataset_overview.png
-docs/images/annotation_example.png
-docs/images/box_clipping.png
-docs/images/architecture.png
-docs/images/training_loss.png
-docs/images/val_map.png
-docs/images/eval_metrics.png
-docs/images/detection_examples.png
-```
-
-These plots are generated automatically by training_mps.py:
+The figures referenced above are generated automatically by `training_mps.py`
+and saved to `outputs/`:
 
 ```
 outputs/split_summary.png
