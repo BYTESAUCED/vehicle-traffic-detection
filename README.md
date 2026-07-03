@@ -42,6 +42,11 @@ create the environment from the project root:
 ```
 cd vehicle-traffic-detection
 uv venv
+
+[windows]
+ .venv\Scripts\activate
+
+[macos]
 source .venv/bin/activate
 ```
 
