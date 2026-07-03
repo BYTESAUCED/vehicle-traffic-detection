@@ -28,8 +28,6 @@ os.environ.setdefault("PYTORCH_ENABLE_MPS_FALLBACK", "1")
 
 import json
 import shutil
-from concurrent.futures import ThreadPoolExecutor
-from huggingface_hub import hf_hub_download
 
 import torch
 
@@ -48,93 +46,21 @@ DEVICE = get_device()
 print(f"Using device: {DEVICE}")
 
 
-# --- Config -----------------------------------------------------------------
-REPO_ID = "iisc-aim/BMD-45"
-REPO_TYPE = "dataset"
-
-# Top-level folders inside the HF repo (change here if the repo uses other names)
-TRAIN_REPO_FOLDER = "BMD-45-Train"
-VAL_REPO_FOLDER = "BMD-45-Val"
-
-# Only this shard is used (each shard holds 5000 images)
-IMAGE_SUBFOLDER = "images_000"
-
-# COCO split files (local to this workspace)
-TRAIN_JSON = "_annotations.coco_train.json"
-VAL_JSON = "_annotations.coco_val.json"
-
-# How many images to pull from each split
-N_TRAIN = 150
-N_VAL = 30
-
-# Parallel download workers (each image is ~3-4 MB, so this speeds things up a lot)
-MAX_WORKERS = 8
-
-OUTPUT_DIR = "bmd45_subset"
+# --- Dataset ----------------------------------------------------------------
+# The dataset subset is obtained by cloning the prepared repository:
+#   git clone https://huggingface.co/datasets/M20VJ/bmd45_subset
+# It already contains the train/valid/test splits with images and COCO
+# annotation files, so there is no download or build step here.
+DATASET_DIR = "bmd45_subset"
 # ---------------------------------------------------------------------------
 
-
-def _sort_key(image):
-    """Sort by numeric filename when possible so selection is reproducible."""
-    stem = os.path.splitext(os.path.basename(image["file_name"]))[0]
-    try:
-        return (0, int(stem))
-    except ValueError:
-        return (1, stem)
-
-
-def build_split(json_path, repo_folder, n_images, out_subdir):
-    with open(json_path) as f:
-        coco = json.load(f)
-
-    # keep only images from the requested shard, then take the first n
-    shard_images = [im for im in coco["images"]
-                    if im["file_name"].startswith(IMAGE_SUBFOLDER + "/")]
-    shard_images.sort(key=_sort_key)
-    selected = shard_images[:n_images]
-    selected_ids = {im["id"] for im in selected}
-
-    out_dir = os.path.join(OUTPUT_DIR, out_subdir)
-    os.makedirs(out_dir, exist_ok=True)
-
-    def download_one(im):
-        # e.g. BMD-45-Train/images_000/41.png
-        repo_path = f"{repo_folder}/{im['file_name']}"
-        cached = hf_hub_download(repo_id=REPO_ID, repo_type=REPO_TYPE, filename=repo_path)
-        basename = os.path.basename(im["file_name"])
-        shutil.copy(cached, os.path.join(out_dir, basename))
-        new_im = dict(im)
-        new_im["file_name"] = basename   # flatten path so it sits next to the json
-        return new_im
-
-    # download the selected images in parallel
-    with ThreadPoolExecutor(max_workers=MAX_WORKERS) as executor:
-        new_images = list(executor.map(download_one, selected))
-    print(f"[{out_subdir}] downloaded {len(new_images)} images")
-
-    new_annotations = [a for a in coco["annotations"] if a["image_id"] in selected_ids]
-    subset = {
-        "info": coco.get("info", {}),
-        "licenses": coco.get("licenses", []),
-        "images": new_images,
-        "annotations": new_annotations,
-        "categories": coco["categories"],
-    }
-    with open(os.path.join(out_dir, "_annotations.coco.json"), "w") as f:
-        json.dump(subset, f)
-
-    print(f"{out_subdir}: {len(new_images)} images, {len(new_annotations)} annotations -> {out_dir}")
-    return len(new_images), len(new_annotations)
-
-
-os.makedirs(OUTPUT_DIR, exist_ok=True)
-train_imgs, train_anns = build_split(TRAIN_JSON, TRAIN_REPO_FOLDER, N_TRAIN, "train")
-val_imgs, val_anns = build_split(VAL_JSON, VAL_REPO_FOLDER, N_VAL, "valid")
-
-print("\nDone.")
-print(f"Train: {train_imgs} images / {train_anns} annotations")
-print(f"Val:   {val_imgs} images / {val_anns} annotations")
-print(f"Total: {train_imgs + val_imgs} images")
+if not os.path.isdir(os.path.join(DATASET_DIR, "train")):
+    raise SystemExit(
+        f"Dataset folder '{DATASET_DIR}' with a train/ split was not found.\n"
+        "Clone the prepared subset first (uses Git-Xet for large files):\n"
+        "  git clone https://huggingface.co/datasets/M20VJ/bmd45_subset"
+    )
+print(f"Using dataset: {DATASET_DIR}")
 
 
 # --- Reproducibility --------------------------------------------------------
