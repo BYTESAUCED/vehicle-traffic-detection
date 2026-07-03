@@ -75,12 +75,18 @@ root:
 ```
 # Install git-xet once (macOS with Homebrew)
 brew install git-xet
-git xet install
+# windows
+winget install git-xet
 
-# Model weights -> rfdetr-nano-bmd45-finetune/
+# install xnet and lfs
+git xet install
+git lfs install
+
+
+# Model weights required!
 git clone https://huggingface.co/M20VJ/rfdetr-nano-bmd45-finetune
 
-# Dataset subset (optional) not required to run streamlit app -> bmd45_subset/
+# Dataset subset (optional) not required to run streamlit app
 git clone https://huggingface.co/datasets/M20VJ/bmd45_subset
 ```
 
