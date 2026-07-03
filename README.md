@@ -183,6 +183,8 @@ bmd45_subset/
 
 ## Model setup and training/adaptation performed
 
+- for detailed info refer to [MODEL_TRAINING.md](MODEL_TRAINING.md)
+
 - Model: RF-DETR-Nano (a DINOv2 backbone with a DETR-style detection
   transformer), fine-tuned from Roboflow pretrained weights. The detection head
   is re-initialised to the 13 BMD-45 classes, detected automatically from the
