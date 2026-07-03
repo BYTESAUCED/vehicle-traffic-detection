@@ -40,7 +40,7 @@ Install uv (see https://docs.astral.sh/uv/getting-started/installation/), then
 create the environment from the project root:
 
 ```
-cd cd vehicle-traffic-detection
+cd vehicle-traffic-detection
 uv venv
 source .venv/bin/activate
 ```
