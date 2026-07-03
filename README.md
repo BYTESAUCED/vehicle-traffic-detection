@@ -36,6 +36,7 @@ create the environment from the project root:
 
 ```
 uv venv
+source .venv/bin/activate
 ```
 
 PyTorch is platform and hardware dependent (CPU, CUDA version, or Apple MPS), so
@@ -47,7 +48,7 @@ build already includes MPS support. If the wrong build is installed, the model
 may fall back to CPU or fail to load.
 
 ```
-# Example (see the selector for the command that matches your hardware)
+# Example [macos mps+cpu backend] (see the selector for the command that matches your hardware)
 uv pip install torch torchvision
 ```
 
@@ -55,17 +56,8 @@ Then install the project and its remaining dependencies:
 
 ```
 uv pip install -e .
-```
-
-To reproduce training, also install the training extras:
-
-```
 uv pip install "rfdetr[train,loggers]"
 ```
-
-The library selects the compute backend automatically: Apple MPS, then CUDA,
-then CPU.
-
 
 ## Get the model weights and dataset
 
