@@ -1,0 +1,6 @@
+file_name,width,height,vehicle_count,density,class_counts
+1217.png,1920,1080,3,low,"{""Two-wheeler"": 3}"
+122.png,1920,1080,17,high,"{""Three-wheeler"": 6, ""Two-wheeler"": 11}"
+1246.png,1920,1080,3,low,"{""Three-wheeler"": 2, ""Two-wheeler"": 1}"
+1300.png,1920,1080,4,low,"{""Bus"": 1, ""Truck"": 1, ""Three-wheeler"": 2}"
+1304.png,1920,1080,1,low,"{""LCV"": 1}"

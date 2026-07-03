@@ -1,0 +1,24 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+.vscode/
+
+# Python virtual environment
+.venv/
+venv/
+
+# uv lock file
+uv.lock
+
+# Model weights / training outputs (cloned or produced by training)
+rfdetr-nano-bmd45-finetune/
+bmd45_subset/
+# Python caches
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
