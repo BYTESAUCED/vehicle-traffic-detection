@@ -89,8 +89,6 @@ git lfs install
 
 [windows]
 winget install git-xet GitHub.GitLFS
-git xet install
-git lfs install
 ```
 
 Windows (Manual Installer, winget Doesn't work)
