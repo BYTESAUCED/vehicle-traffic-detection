@@ -68,20 +68,47 @@ uv pip install "rfdetr[train,loggers]"
 ## Get the model weights and dataset
 
 The fine-tuned model weights and the dataset (optional) subset are hosted on the Hugging
-Face Hub and use Git-Xet for large files. Install git-xet first (see
-https://hf.co/docs/hub/git-xet), then clone both repositories into the project
+Face Hub, use Git-Xet and git-lfs for large files. Install git-xet first (see
+https://hf.co/docs/hub/git-xet) and (see https://git-lfs.com/), then clone both repositories into the project
 root:
 
 ```
 # Install git-xet once (macOS with Homebrew)
 brew install git-xet
+
 # windows
 winget install git-xet
 
+### macOS (Homebrew)
+
+```bash
+brew install git-lfs
+git lfs install
+```
+
+Windows (Winget)
+```cmd
+winget install GitHub.GitLFS
+git lfs install
+```
+ Windows (Manual Installer)
+
+1. Download and run the setup from [git-lfs.com](https://git-lfs.com).
+2. Run the initialization command:
+```cmd
+git lfs install
+```
+
+
+ Verify Installation
+```bash
+git lfs version
+```
+
+```
 # install xnet and lfs
 git xet install
 git lfs install
-
 
 # Model weights required!
 git clone https://huggingface.co/M20VJ/rfdetr-nano-bmd45-finetune
