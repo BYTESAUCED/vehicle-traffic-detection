@@ -76,7 +76,7 @@ uv pip install "rfdetr[train,loggers]"
 
 ## Get the model weights and dataset
 
-The fine-tuned model weights and the dataset (optional) subset are hosted on the Hugging
+The fine-tuned model weights and the dataset subset are hosted on the Hugging
 Face Hub, use Git-Xet and git-lfs for large files. Install git-xet first (see
 https://hf.co/docs/hub/git-xet) and (see https://git-lfs.com/), then clone both repositories into the project
 root:
