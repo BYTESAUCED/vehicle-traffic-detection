@@ -58,7 +58,11 @@ with CUDA you install the matching CUDA wheels; on Apple Silicon the default
 build already includes MPS support. If the wrong build is installed, the model
 may fall back to CPU or fail to load.
 
+
 ```
+#Example [windows cuda version 12.8]
+ uv pip install torch torchvision --index-url https://download.pytorch.org/whl/cu128
+
 # Example [macos mps+cpu backend] (see the selector for the command that matches your hardware)
 uv pip install torch torchvision
 ```
