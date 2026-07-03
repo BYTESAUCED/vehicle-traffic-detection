@@ -109,7 +109,7 @@ git lfs version
 # Model weights required!
 git clone https://huggingface.co/M20VJ/rfdetr-nano-bmd45-finetune
 
-# Dataset subset (optional) not required to run streamlit app
+# Dataset subset 
 git clone https://huggingface.co/datasets/M20VJ/bmd45_subset
 ```
 
