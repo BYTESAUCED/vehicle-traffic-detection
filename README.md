@@ -85,12 +85,10 @@ root:
 # Install git-xet once (macOS with Homebrew)
 brew install git-xet
 
-# windows
+[windows]
 winget install git-xet
 
-### macOS (Homebrew)
-
-```bash
+[macOS (Homebrew)]
 brew install git-lfs
 git lfs install
 ```
@@ -100,7 +98,8 @@ Windows (Winget)
 winget install GitHub.GitLFS
 git lfs install
 ```
- Windows (Manual Installer)
+
+Windows (Manual Installer)
 
 1. Download and run the setup from [git-lfs.com](https://git-lfs.com).
 2. Run the initialization command:
