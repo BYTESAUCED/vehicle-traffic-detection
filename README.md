@@ -106,10 +106,6 @@ git lfs version
 ```
 
 ```
-# install xnet and lfs
-git xet install
-git lfs install
-
 # Model weights required!
 git clone https://huggingface.co/M20VJ/rfdetr-nano-bmd45-finetune
 
