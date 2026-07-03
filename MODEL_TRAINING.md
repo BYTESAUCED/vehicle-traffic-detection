@@ -175,7 +175,7 @@ Threshold-derivation histogram:
 Hyperparameters:
 
 ```
-epochs:               40
+epochs:               15
 batch size:           4
 gradient accumulation: 4      (effective batch 16)
 learning rate:        5e-5
