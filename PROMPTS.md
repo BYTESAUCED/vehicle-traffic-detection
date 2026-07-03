@@ -67,7 +67,7 @@ limitations also Docstring that might be useful in the readme file. Also write a
 leaves placeholders for GitHub to link images of results and annotations.
 
 
-## Prompt 14: Confidence score clustering pipeline (Otsu)
+## Prompt 8: Confidence score clustering pipeline (Otsu)
 
 Implement a better per-image confidence pipeline. Run the detection model once
 per image at confidence 0.05, which is the only forward pass; every other step
