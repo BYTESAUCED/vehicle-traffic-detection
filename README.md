@@ -33,7 +33,7 @@ a clean end-to-end flow (data, training, inference, density label, UI) is.
 
 Clone the repo:
 ```
-https://github.com/BYTESAUCED/vehicle-traffic-detection.git
+git clone https://github.com/BYTESAUCED/vehicle-traffic-detection.git
 ```
 
 Install uv (see https://docs.astral.sh/uv/getting-started/installation/), then
