@@ -69,7 +69,7 @@ then CPU.
 
 ## Get the model weights and dataset
 
-The fine-tuned model weights and the dataset subset are hosted on the Hugging
+The fine-tuned model weights and the dataset (optional) subset are hosted on the Hugging
 Face Hub and use Git-Xet for large files. Install git-xet first (see
 https://hf.co/docs/hub/git-xet), then clone both repositories into the project
 root:
@@ -82,7 +82,7 @@ git xet install
 # Model weights -> rfdetr-nano-bmd45-finetune/
 git clone https://huggingface.co/M20VJ/rfdetr-nano-bmd45-finetune
 
-# Dataset subset -> bmd45_subset/
+# Dataset subset (optional) not required to run streamlit app -> bmd45_subset/
 git clone https://huggingface.co/datasets/M20VJ/bmd45_subset
 ```
 
@@ -91,6 +91,33 @@ inference by default, and `bmd45_subset/` provides the full train/valid/test
 splits, including images and COCO annotation files. No extra download or build
 step is needed.
 
+## How to start the Streamlit app
+
+```
+uv run streamlit run app/streamlit_app.py
+```
+
+Open the local URL that is printed (default http://localhost:8501). The app
+lets you:
+
+- upload one or more images, or pick sample frames from the validation set;
+- choose a confidence method (fixed, adaptive, or Otsu) and its parameters;
+- set a batch chunk size (images are processed in chunks with a progress bar);
+- view one image at a time using Previous and Next buttons;
+- click a row in the summary table to open that image;
+- for each image, view the original, the image with detections, the per-class
+  counts, and the density label;
+- see bar charts for the density distribution and total vehicles per class;
+- rename the output CSV; predictions are auto-saved to
+  `outputs/predictions/` and a notification confirms the save.
+
+Before uploading a large batch of images, set the batch chunk size in the
+sidebar. Images are processed in chunks of that size with a progress bar, which
+keeps memory use bounded and gives incremental feedback. Use a smaller chunk
+size (for example 4) on low-memory machines, and a larger one (for example 16 or
+32) when you have more memory and want fewer progress updates. Per-image results
+are cached, so navigating between images or changing the view does not re-run
+the model.
 
 ## Dataset subset used
 
@@ -189,35 +216,6 @@ from traffic_state.detector import run_on_image
 result = run_on_image("bmd45_subset/valid/122.png", method="otsu")
 print(result.vehicle_count, result.density, result.class_counts)
 ```
-
-
-## How to start the Streamlit app
-
-```
-uv run streamlit run app/streamlit_app.py
-```
-
-Open the local URL that is printed (default http://localhost:8501). The app
-lets you:
-
-- upload one or more images, or pick sample frames from the validation set;
-- choose a confidence method (fixed, adaptive, or Otsu) and its parameters;
-- set a batch chunk size (images are processed in chunks with a progress bar);
-- view one image at a time using Previous and Next buttons;
-- click a row in the summary table to open that image;
-- for each image, view the original, the image with detections, the per-class
-  counts, and the density label;
-- see bar charts for the density distribution and total vehicles per class;
-- rename the output CSV; predictions are auto-saved to
-  `outputs/predictions/` and a notification confirms the save.
-
-Before uploading a large batch of images, set the batch chunk size in the
-sidebar. Images are processed in chunks of that size with a progress bar, which
-keeps memory use bounded and gives incremental feedback. Use a smaller chunk
-size (for example 4) on low-memory machines, and a larger one (for example 16 or
-32) when you have more memory and want fewer progress updates. Per-image results
-are cached, so navigating between images or changing the view does not re-run
-the model.
 
 
 ## How the density label is computed
